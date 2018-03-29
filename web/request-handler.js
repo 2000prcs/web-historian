@@ -6,19 +6,19 @@ var fs = require('fs');
 
 
 
-var sendFileContent = function(response, filename, contentType){
-  fs.readFile(filename, function(err, data){
-    if(err){
+var sendFileContent = function(response, filename, contentType) {
+  fs.readFile(filename, function(err, data) {
+    if (err) {
       console.log(err);
       response.writeHead(404);
-      response.write("Not Found!");
+      response.write('Not Found!');
     } else {
       response.writeHead(200, {'Content-Type': contentType});
       response.write(data);
     } 
     response.end();
   });
-}
+};
 
 
 exports.handleRequest = function (req, res) {
@@ -26,24 +26,18 @@ exports.handleRequest = function (req, res) {
   console.log(method, url);
   
   if (method === 'GET') {
-    if(url === '/'){
-      //console.log(__dirname);
+    if (url === '/') {
       sendFileContent(res, path.join(__dirname, '..', 'web', 'public', 'index.html'), 'text/html');
-    } else if (url === '/styles.css'){
+    } else if (url === '/styles.css') {
       sendFileContent(res, path.join(__dirname, '..', 'web', 'public', 'styles.css'), 'text/css');
     } else {
-      res.writeHead(404, '')
+      res.writeHead(404, httpHelpers.headers);
+      // archive.isUrlInList(url, data=>{
+      //   console.log('works');
+      //   return url === data;
+      // });
       archive.readListOfUrls(data=>{
-        
-        // archive.isUrlInList(data, data=>{
-        //   console.log('isUrlInList', data);
-        // });
-
-        console.log('data', data);
-
-        archive.isUrlInList(data, data=>{
-          //return data = 
-        });
+        console.log('works?');
         return data;
       });
       
@@ -54,16 +48,19 @@ exports.handleRequest = function (req, res) {
       var parsedChunk = JSON.parse(chunk);
       chunk = JSON.stringify(parsedChunk);
       body += chunk;
-      //archive.isUrlInList(url, archive.readListOfUrls)
-    }).on('end', () => {
-      httpHelpers.headers['Content-Type'] = 'application/json';
-      response.writeHead(statusCode, httpHelpers.headers);
-      response.end({body});
-      archive.addUrlToList(body, callback);
-    })
+      //archive.addUrlToList(body, body=>{console.log('body'); return body;});
+    }).on('end', () => { 
+      // httpHelpers.headers['Content-Type'] = 'application/json';
+      // response.writeHead(statusCode, httpHelpers.headers);
+      // response.end({body});
+      console.log(body);
+      archive.isUrlInList();
+      sendFileContent(res, path.join(__dirname, '..', 'web', 'public', 'loading.html'), 'text/html');
+      //archive.addUrlToList(body, callback);
+    });
   } else {
-      response.writeHead(404, httpHelpers.headers)
-      response.end();
+    response.writeHead(404, httpHelpers.headers);
+    response.end();
   }
   //res.end(archive.paths.list);
 };
