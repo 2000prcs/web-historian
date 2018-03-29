@@ -50,12 +50,11 @@ exports.isUrlInList = function (url, callback) {
 
 exports.addUrlToList = function (url, callback) {
   //use fs append to file
-
   fs.appendFile(this.paths.list, url, (err) => {
     if (err) {
       callback(err);
     }
-    callback(url);
+    callback(null, url);
   });
 
 };
