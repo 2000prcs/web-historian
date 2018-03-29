@@ -22,39 +22,42 @@ exports.initialize = function(pathsObj) {
   });
 };
 
+
+//var urls = [];
+
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback) { //should return an array of url's
-  var result = [];
-  var context = this;
-  fs.readfile(path.join(__dirname, '../archives/sites.txt'), (err, data) => {
+  // var context = this;
+  fs.readFile(this.paths.list, (err, data) => {
     if (err) {throw err;}
-    var array = data.toString().split("\n");
-    array.forEach((data)=>{
-      result.push(data);
-    });
-    console.log(array);
-    // callback(data);
-    // if(!this.paths.list.includes(data)){
-    //   callback(data);
-    // }
-    // response.write(data);
-    // response.end();
+    //split string (newline ) into array?
+    var stringsArray = data.toString().split('\n');
+    //urls.push(stringsArray);
+    // console.log('strings', strings);
+    callback(stringsArray);
   })
-  console.log(result);
-  return result;
-  //split string (newline ) into array?
 };
 
 exports.isUrlInList = function(url, callback) {
   //use readlist of urls to check
     //if this.readlistofURLs includes url 
       //return true
-  // this.readListOfUrls
-  if(!this.paths.list.includes(url)){
-    callback(url);
-  }
+
+  // if(!this.paths.list.includes(url)){
+  //   callback(url);
+  // }
+
+  // console.log('urls', urls);
+  // urls.forEach(item => {
+    // if(item === url){
+    //   console.log('url', url);
+    //   callback(url);
+    // }
+  // });
+
+  callback(url);
 };
 
 exports.addUrlToList = function(url, callback) {

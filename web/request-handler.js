@@ -20,19 +20,29 @@ var sendFileContent = function(response, filename, contentType){
   });
 }
 
+
 exports.handleRequest = function (req, res) {
   const {method, url} = req;
   console.log(method, url);
   
   if (method === 'GET') {
     if(url === '/'){
-      console.log(__dirname);
+      //console.log(__dirname);
       sendFileContent(res, path.join(__dirname, '..', 'web', 'public', 'index.html'), 'text/html');
     } else if (url === '/styles.css'){
       sendFileContent(res, path.join(__dirname, '..', 'web', 'public', 'styles.css'), 'text/css');
     } else {
-      sendFileContent(res, archive.paths.archivedSites, 'text/html');
-      archive.readListOfUrls();
+      res.writeHead(404, '')
+      archive.readListOfUrls(data=>{
+        
+        // archive.isUrlInList(data, data=>{
+        //   console.log('isUrlInList', data);
+        // });
+
+        console.log('data', data);
+        return data;
+      });
+      archive.isUrlInList();
     }
   } else if (method === 'POST') {
     var body = '';
