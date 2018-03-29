@@ -40,9 +40,13 @@ exports.handleRequest = function (req, res) {
         // });
 
         console.log('data', data);
+
+        archive.isUrlInList(data, data=>{
+          //return data = 
+        });
         return data;
       });
-      archive.isUrlInList();
+      
     }
   } else if (method === 'POST') {
     var body = '';
