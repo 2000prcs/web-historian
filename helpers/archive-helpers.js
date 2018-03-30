@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var request = require('request');
 var _ = require('underscore');
 
 /*
@@ -28,13 +29,16 @@ exports.initialize = function (pathsObj) {
 
 exports.readListOfUrls = function (callback) { //should return an array of url's
   // var context = this;
-  fs.readFile(this.paths.list, (err, data) => {
-    if (err) {
-      callback(err);
-    }
-    //split string (newline ) into array?
-    var stringsArray = data.toString().split('\n');
-    callback(stringsArray);
+  fs.readFile(exports.paths.list, (err, sites) => {
+    // don't need to handle err here 
+
+    // if (err) {
+    //   callback(err);
+    // }
+
+    //split string (newline ) into array
+    var sites = sites.toString().split('\n');
+    callback(sites);
   });
 };
 
@@ -42,32 +46,38 @@ exports.isUrlInList = function (url, callback) {
   //use readlist of urls to check
   //if this.readlistofURLs includes url 
   //return true
-  this.readListOfUrls((stringsArray) => {
-    callback(stringsArray.includes(url));
+  exports.readListOfUrls((sites) => {
+    callback(sites.includes(url));
   });
 
 };
 
 exports.addUrlToList = function (url, callback) {
   //use fs append to file
-  fs.appendFile(this.paths.list, url, (err) => {
-    if (err) {
-      callback(err);
-    }
-    callback(null, url);
+  fs.appendFile(exports.paths.list, url + '\n', (err, file) => {
+    // don't need to handle err here 
+
+    // if (err) {
+    //   callback(err);
+    // }
+
+    // callback doesn't do anything?
+    callback();
+    //callback(null, url);
   });
 
 };
 
 exports.isUrlArchived = function (url, callback) {   
-  fs.stat(this.paths.archivedSites + '/' + url, (err)=> {
+  fs.stat(exports.paths.archivedSites + '/' + url, (err)=> {
     callback(err === null); 
   });
 };
 
 exports.downloadUrls = function (urls) {
+  // iterate over urls and create new files
   for (var i = 0; i < urls.length; i++) {
-    fs.writeFile(this.paths.archivedSites + '/' + urls[i], urls[i], function (err) {
+    fs.writeFile(exports.paths.archivedSites + '/' + urls[i], urls[i], function (err) {
       if (err) {
         console.log('error writing file', err);
       } else {
