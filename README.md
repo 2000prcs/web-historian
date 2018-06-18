@@ -1,6 +1,6 @@
 # Web Historian
 
-This project rewrote http://archive.org, a web service that archives sites on the internet. This version will allow users to submit a URL, and it'll archive it (by getting a copy of that website off of the internet and writing it to a local text file) and show them the copy.
+This project rewrote http://archive.org, a web service that archives sites on the internet. This version allows users to submit a URL, and it'll archive it (by getting a copy of that website off of the internet and writing it to a local text file) and show users the copy.
 
 
 # Core Application
